@@ -6,6 +6,8 @@ import com.empire.JeopardyService.service.GameLogicService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class GameLogicController {
 
@@ -33,6 +35,11 @@ public class GameLogicController {
     @PostMapping(path = "/api/buzzers/score")
     public void scoreQuestion(@RequestBody ScoreRequest scoreRequest) throws BadRequestException {
         gameLogicService.scoreBuzzer(scoreRequest);
+    }
+
+    @GetMapping(path = "/api/buzzers/order")
+    public List<Buzzer> answerOrder() throws BadRequestException {
+        return gameLogicService.getAnswerOrder();
     }
 
 

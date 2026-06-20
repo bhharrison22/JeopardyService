@@ -9,6 +9,9 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -18,7 +21,6 @@ public class GameLogicService {
 
     public void buzzIn(String buzzerId) throws BadRequestException {
         try {
-
             if (GameConfig.setupMode) {
                 setupBuzzer(buzzerId);
                 return;
@@ -29,7 +31,6 @@ public class GameLogicService {
             Buzzer buzzer = fetchBuzzer(buzzerId);
             if (isValidBuzz(buzzer, buzzTime)) {
                 buzzer.setBuzzed(buzzTime);
-                //TODO: send message to UI?
                 log.info("Sending API message to UI to add user to stack...");
             }
             buzzer.setLockout(buzzTime.plusNanos(GameConfig.lockoutDuration * NANOSECONDS_PER_MILLISECOND));
@@ -67,7 +68,14 @@ public class GameLogicService {
         buzzer.setScore(buzzer.getScore() + calculateScoreChange(scoreRequest));
         if (scoreRequest.isCorrect()) {
             resetBuzzers();
+            return;
         }
+        buzzer.setBuzzed(null);
+    }
+
+    public List<Buzzer> getAnswerOrder() {
+        return GameRecord.buzzers.stream().filter(b -> Objects.nonNull(b.getBuzzed()))
+                .sorted(Comparator.comparing(Buzzer::getBuzzed)).toList();
     }
 
     private int calculateScoreChange(ScoreRequest scoreRequest) {

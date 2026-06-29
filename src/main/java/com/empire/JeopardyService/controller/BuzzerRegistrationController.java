@@ -48,6 +48,18 @@ public class BuzzerRegistrationController {
         return new ResponseEntity<>("Removed", HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping(path = "/api/buzzer/update")
+    public ResponseEntity<String> updateBuzzer(@RequestBody Buzzer buzzer) throws BadRequestException {
+        buzzerRegistrationService.updateBuzzer(buzzer);
+        return new ResponseEntity<>("Updated", HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/api/buzzer/update")
+    public ResponseEntity<String> updateBuzzerPatch(@RequestBody Buzzer buzzer) throws BadRequestException {
+        buzzerRegistrationService.updateBuzzer(buzzer);
+        return new ResponseEntity<>("Kody Sux", HttpStatus.OK);
+    }
+
     @GetMapping(path = "/api/buzzer/last")
     public ResponseEntity<String> lastBuzzer() {
         return new ResponseEntity<>(GameRecord.lastBuzzerId, HttpStatus.OK);

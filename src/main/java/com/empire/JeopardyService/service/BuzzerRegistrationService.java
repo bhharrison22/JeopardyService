@@ -29,4 +29,10 @@ public class BuzzerRegistrationService {
         }
         throw new BadRequestException("Buzzer does not exist");
     }
+
+    public void updateBuzzer(Buzzer buzzerRequest) throws BadRequestException {
+        Buzzer buzzer = GameRecord.fetchBuzzer(buzzerRequest.getBuzzerId()).orElseThrow(() -> new BadRequestException("Buzzer does not exist"));
+        buzzer.setUserName(buzzerRequest.getUserName());
+        buzzer.setScore(buzzerRequest.getScore());
+    }
 }

@@ -38,7 +38,7 @@ public class GameLogicController {
     }
 
     @GetMapping(path = "/api/buzzers/order")
-    public List<Buzzer> answerOrder() throws BadRequestException {
+    public List<Buzzer> answerOrder() {
         return gameLogicService.getAnswerOrder();
     }
 
